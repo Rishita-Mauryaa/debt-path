@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DebtPath — EMI ka tension? Chill karo.</title>
+<meta name="description" content="DebtPath: AI repayment plans, Auto Dip-Pay & outcome-based pricing — prototype landing page." />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ===== Design tokens ===== */
+  :root{
+    --maxw:1100px;
+    --bg:#FFFFFF;
+    --card:#FFFFFF;
+    --surface:#F6F9FB;
+    --accent:#00C7AA;
+    --accent-2:#38e6c0;
+    --text:#111417;
+    --muted:#6B7785;
+    --glass:rgba(18,20,23,0.04);
+    --radius:12px;
+    --shadow: 0 10px 30px rgba(18,20,23,0.06);
+    --gap:18px;
+    --ease: 180ms;
+  }
+
+  /* ===== Base ===== */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+    background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;font-size:16px;
+    line-height:1.45;
+  }
+  a{color:var(--accent);text-decoration:none}
+  .container{max-width:var(--maxw);margin:0 auto;padding:28px}
+  .muted{color:var(--muted)}
+  .sr{position:absolute;left:-9999px}
+
+  /* ===== Header ===== */
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;position:sticky;top:0;background:rgba(255,255,255,0.94);backdrop-filter:blur(6px);z-index:40}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#021216;font-weight:800;font-size:18px;box-shadow:0 6px 16px rgba(0,0,0,0.06)}
+  nav{display:flex;gap:10px;align-items:center}
+  .btn{background:var(--accent);color:#05221f;padding:10px 14px;border-radius:10px;border:none;font-weight:700;cursor:pointer;transition:transform var(--ease)}
+  .btn:hover{transform:translateY(-3px)}
+  .ghost{background:transparent;border:1px solid rgba(18,20,23,0.06);padding:9px 12px;border-radius:10px;color:var(--text);cursor:pointer}
+
+  /* ===== Hero ===== */
+  .hero{display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start;padding:20px 0}
+  h1{font-size:34px;margin:0 0 8px;font-weight:800}
+  p.lead{color:var(--muted);margin:0 0 12px;font-size:16px}
+  .pill-row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .pill{background:var(--surface);padding:8px 10px;border-radius:999px;font-size:13px;color:var(--muted);box-shadow:0 8px 20px rgba(16,24,32,0.03)}
+
+  .positioning{background:linear-gradient(180deg,#fff,#fbfffc);border-radius:12px;padding:14px;border:1px solid var(--glass);box-shadow:var(--shadow);margin-top:16px}
+
+  /* ===== Phone card ===== */
+  .phone{width:100%;max-width:340px;border-radius:14px;padding:16px;border:1px solid var(--glass);background:var(--card);box-shadow:var(--shadow)}
+  .phone .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .metric{font-weight:800}
+  .small{font-size:13px;color:var(--muted)}
+
+  /* ===== Sections ===== */
+  section{padding:28px 0;border-top:1px solid var(--glass)}
+  h2{font-size:20px;margin:0 0 8px;font-weight:800}
+  .card{background:var(--card);padding:14px;border-radius:12px;border:1px solid var(--glass);box-shadow:var(--shadow)}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+  /* ===== Flow chart (single-line) ===== */
+  .flow-wrap{display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap;padding:12px 0}
+  .flow-step{display:flex;align-items:center;gap:12px;min-width:200px;background:var(--card);border-radius:12px;padding:12px;border:1px solid var(--glass);box-shadow:var(--shadow);flex:1 1 220px}
+  .flow-step .icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#021216;font-weight:800;font-size:15px;flex-shrink:0}
+  .flow-step .meta{display:flex;flex-direction:column}
+  .flow-step .title{font-weight:700}
+  .flow-step .sub{font-size:13px;color:var(--muted);margin-top:6px}
+  .flow-arrow{width:44px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .flow-arrow svg{width:28px;height:16px;opacity:0.65}
+  @media (max-width:780px){ .flow-arrow{display:none} .flow-step{flex:1 1 100%;min-width:0} }
+
+  /* ===== Offers & tech ===== */
+  .offers{display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start}
+  .offer-list{display:grid;gap:12px}
+  .tech-badge{display:inline-block;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021216;padding:6px 8px;border-radius:8px;font-weight:700;font-size:13px}
+
+  /* ===== Partners grid ===== */
+  .partner-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+  .partner-item{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;border:1px solid var(--glass);background:var(--card);box-shadow:var(--shadow);min-height:96px}
+  .partner-icon{width:48px;height:48px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#021216;font-weight:800}
+  .partner-title{font-weight:700}
+  .partner-desc{color:var(--muted);font-size:13px;margin-top:6px}
+
+  /* ===== Equal rows ===== */
+  .equal-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .equal-row .card{display:flex;flex-direction:column;justify-content:space-between;min-height:120px}
+
+  /* ===== Pricing & inputs ===== */
+  .pricing{display:flex;gap:12px;flex-wrap:wrap}
+  .plan{flex:1;min-width:220px;padding:12px;border-radius:12px;background:var(--card);border:1px solid var(--glass);box-shadow:var(--shadow)}
+  input[type="number"],input[type="tel"]{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(18,20,23,0.06);font-size:15px}
+
+  /* ===== Roadmap ===== */
+  .roadmap-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+  /* ===== Footer ===== */
+  footer{padding:22px 0;color:var(--muted);font-size:14px}
+
+  /* ===== Responsive adjustments ===== */
+  @media (max-width:1024px){
+    .hero{grid-template-columns:1fr 320px}
+    .offers{grid-template-columns:1fr}
+    .roadmap-wrap{grid-template-columns:1fr}
+  }
+  @media (max-width:680px){
+    .hero{grid-template-columns:1fr}
+    .grid-3{grid-template-columns:1fr}
+    .equal-row{grid-template-columns:1fr}
+  }
+
+  /* micro interactions */
+  .btn:active{transform:translateY(1px)}
+  .ghost:active{transform:translateY(1px)}
+  .note{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+  <div class="container" role="main" aria-label="DebtPath landing">
+
+    <!-- Header -->
+    <header role="banner" aria-label="Top navigation">
+      <div class="brand" aria-hidden="false">
+        <div class="logo">DP</div>
+        <div>
+          <div style="font-weight:800">DebtPath</div>
+          <div class="muted" style="font-size:13px">AI repayment plans • Outcome pricing</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <button class="ghost" onclick="scrollToId('how')">How</button>
+        <button class="ghost" onclick="scrollToId('offers')">What we do</button>
+        <button class="ghost" onclick="scrollToId('journey')">Journey</button>
+        <button class="ghost" onclick="scrollToId('pricing')">Pricing</button>
+        <button class="btn" onclick="openModal()">See My Plan</button>
+      </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" id="top" aria-labelledby="heroH">
+      <div>
+        <h1 id="heroH">EMI ka tension? Chill karo.</h1>
+        <p class="lead">AI repayment plans. Auto Dip-Pay. Outcome-based pricing.</p>
+        <div class="pill-row" aria-hidden="true">
+          <div class="pill">AI Plan</div>
+          <div class="pill">Auto Dip-Pay</div>
+          <div class="pill">Outcome pricing</div>
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <button class="btn" onclick="openModal()">See My Plan</button>
+          <button class="ghost" onclick="scrollToId('how')">Quick tour</button>
+        </div>
+
+        <div class="positioning" style="margin-top:16px">
+          <strong>We’re not playing with psychology — we’re respecting it.</strong>
+          <div class="muted" style="margin-top:8px">
+            Middle-class Indians in debt don’t think in financial jargon. They think in feelings: stress, confusion, EMIs, fear of losing money.
+            <br><br>
+            Instead of speaking like a broker, we speak in the language they actually understand: relief, control, clarity, safety. Zerodha talks to traders. We talk to stressed households.
+            <br><br>
+            This is not manipulation — it’s product design: meeting users where they truly are, giving emotional & financial safety traditional brokerages never built.
+          </div>
+        </div>
+      </div>
+
+      <aside class="phone" aria-label="Product preview">
+        <div class="row">
+          <div style="font-weight:700">DebtPath</div>
+          <div class="muted small">AA-ready • Secure <span style="margin-left:8px;background:linear-gradient(90deg,var(--accent),var(--accent-2));padding:6px 8px;border-radius:8px;font-weight:700;font-size:13px">S</span></div>
+        </div>
+
+        <div class="card" style="padding:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div class="small muted">Monthly spare</div><div class="metric">₹ 3,200</div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px"><div class="small muted">Est. saved (12 mo)</div><div class="metric" style="color:var(--accent)">₹ 4,760</div></div>
+          <div style="margin-top:12px"><div class="small muted">Next action</div><div style="font-weight:700;margin-top:6px">Pay extra ₹350 on Loan A</div></div>
+          <div style="margin-top:12px">
+            <div style="display:flex;justify-content:space-between;color:var(--muted);font-size:13px"><span>Plan progress</span><span>4 / 12</span></div>
+            <div style="margin-top:8px;background:var(--glass);height:8px;border-radius:8px;overflow:hidden"><div style="width:48%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))"></div></div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="card">
+          <div class="muted" style="font-size:13px">App preview</div>
+          <div style="display:flex;gap:8px;overflow:auto;margin-top:10px">
+            <div style="min-width:120px;padding:8px;border-radius:8px;border:1px solid var(--glass);background:#fff"><strong>Home</strong><div class="muted" style="font-size:12px;margin-top:6px">Overview</div></div>
+            <div style="min-width:120px;padding:8px;border-radius:8px;border:1px solid var(--glass);background:#fff"><strong>Link</strong><div class="muted" style="font-size:12px;margin-top:6px">AA consent</div></div>
+            <div style="min-width:120px;padding:8px;border-radius:8px;border:1px solid var(--glass);background:#fff"><strong>Plan</strong><div class="muted" style="font-size:12px;margin-top:6px">Timeline</div></div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Journey: flow chart (single-line) -->
+    <section id="journey" aria-labelledby="journeyH">
+      <h2 id="journeyH">User journey — first 2 minutes (4 steps)</h2>
+      <p class="muted" style="margin-top:6px">Fast, empathetic onboarding that delivers the first value moment quickly.</p>
+
+      <div class="flow-wrap" style="margin-top:14px" role="list" aria-label="Onboarding steps">
+        <div class="flow-step" role="listitem" aria-label="Step 1 Signup">
+          <div class="icon">1</div>
+          <div class="meta"><div class="title">Signup</div><div class="sub">Phone + OTP — 90s</div></div>
+        </div>
+
+        <div class="flow-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 6h16" stroke="#88989A" stroke-width="1.6" stroke-linecap="round"/><path d="M12 2l4 4-4 4" stroke="#88989A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <div class="flow-step" role="listitem" aria-label="Step 2 Welcome message">
+          <div class="icon">2</div>
+          <div class="meta"><div class="title">Welcome message</div><div class="sub">“Relief plan in 2 minutes”</div></div>
+        </div>
+
+        <div class="flow-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 6h16" stroke="#88989A" stroke-width="1.6" stroke-linecap="round"/><path d="M12 2l4 4-4 4" stroke="#88989A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <div class="flow-step" role="listitem" aria-label="Step 3 Financial Health Scan">
+          <div class="icon">3</div>
+          <div class="meta"><div class="title">Financial Health Scan</div><div class="sub">Add income, EMIs, loans — app analyses instantly</div></div>
+        </div>
+
+        <div class="flow-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 6h16" stroke="#88989A" stroke-width="1.6" stroke-linecap="round"/><path d="M12 2l4 4-4 4" stroke="#88989A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <div class="flow-step" role="listitem" aria-label="Step 4 First value moment">
+          <div class="icon">4</div>
+          <div class="meta"><div class="title">First value moment</div><div class="sub">Shows ₹ saved, EMI optimization, & Stress Score</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick convert 3 headings -->
+    <section id="how" aria-labelledby="howH">
+      <h2 id="howH">Why users convert instantly</h2>
+      <div class="equal-row" style="margin-top:12px">
+        <div class="card"><strong>Why Users Convert Immediately</strong><div class="muted" style="margin-top:8px">We give emotional relief first — “Here’s what's causing your stress” — before numbers. Users feel seen, increasing trust.</div></div>
+        <div class="card"><strong>Zero Jargon, Only Real Money</strong><div class="muted" style="margin-top:8px">No confusing charts — user sees: “Save ₹800/month starting today.” Plain, provable statements build credibility.</div></div>
+        <div class="card"><strong>One Clear CTA</strong><div class="muted" style="margin-top:8px">Onboarding has one primary action: “Start Recovering Money.” Fewer choices → higher activation.</div></div>
+      </div>
+    </section>
+
+    <!-- 6-step flow -->
+    <section aria-labelledby="flowH">
+      <h2 id="flowH">Step-by-step flow (how a visitor becomes an active user)</h2>
+      <div class="card" style="margin-top:12px">
+        <ol style="margin:0;padding-left:18px">
+          <li>User lands on the page seeking relief from EMI/debt stress.</li>
+          <li>Sign-up in 90 seconds using phone number (no documents).</li>
+          <li>Welcome message opens with reassurance: “You’re not alone.”</li>
+          <li>User completes the 2-minute Financial Health Scan.</li>
+          <li>App generates a personalized Financial Stress Score.</li>
+          <li>User sees first value: “You can save ₹X per month” → Converts.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Offers & technical -->
+    <section id="offers" aria-labelledby="offersH">
+      <h2 id="offersH">What DebtPath offers — and how we do it</h2>
+      <p class="muted" style="margin-top:6px">Product capabilities and the technical building blocks required for production (backend badges mark what's needed).</p>
+
+      <div class="offers" style="margin-top:12px">
+        <div class="offer-list">
+          <div class="offer-item card"><strong>Smart Repayment Optimization</strong><div class="muted" style="margin-top:8px">Priority ordering of EMIs to reduce interest using constraint-aware optimization.</div></div>
+          <div class="offer-item card"><strong>Automated Dip-Pay Orchestration <span class="tech-badge">Requires backend</span></strong><div class="muted" style="margin-top:8px">Micro-payments when balances show spare cash.</div></div>
+          <div class="offer-item card"><strong>Lender Negotiation Playbooks</strong><div class="muted" style="margin-top:8px">Automated & manual workflows to request fee waivers and date alignment.</div></div>
+          <div class="offer-item card"><strong>Outcome Verification <span class="tech-badge">Requires partner APIs</span></strong><div class="muted" style="margin-top:8px">Reconciled receipts and lender confirmations for verified interest savings.</div></div>
+          <div class="offer-item card"><strong>Behavioral Tools</strong><div class="muted" style="margin-top:8px">Timing nudges, commitment devices, micro-rewards and local language framing.</div></div>
+          <div class="offer-item card"><strong>Value-Add Features</strong><div class="muted" style="margin-top:8px">Round-ups, salary-sync, merchant discounts, referral monetization and micro-investing links.</div></div>
+        </div>
+
+        <div class="card">
+          <strong>Technical summary</strong>
+          <div class="muted" style="margin-top:8px;line-height:1.45">
+            <ul style="margin:0;padding-left:18px">
+              <li><strong>Data ingestion:</strong> AA / encrypted bank uploads — consent-first.</li>
+              <li><strong>Optimization engine:</strong> Server-side solver to pick low-interest cash-flow paths.</li>
+              <li><strong>Prediction models:</strong> Short-term cashflow forecasts using transaction history.</li>
+              <li><strong>Decision logic + XAI:</strong> Explainable suggestions in plain language.</li>
+              <li><strong>Execution & reconciliation:</strong> Scheduled Dip-Pay & lender verification (backend & partner APIs required).</li>
+            </ul>
+          </div>
+          <div class="note" style="margin-top:12px">Prototype is UI-only; backend integrations are required for live execution and are labeled above.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Partners / social proof -->
+    <section id="social" aria-labelledby="socialH">
+      <h2 id="socialH">User voices & where we'll find them</h2>
+      <p class="muted" style="margin-top:6px">Illustrative quotes and the channels we will activate — aligned to timing & cashflow issues.</p>
+
+      <div class="equal-row" style="margin-top:12px">
+        <div class="card"><strong>“Auto-pay se tension kam hua.”</strong><div class="muted" style="margin-top:8px">— Mock: Ravi, kirana shop owner</div></div>
+        <div class="card"><strong>“Simple plan, 1 click follow.”</strong><div class="muted" style="margin-top:8px">— Mock: Anita, school teacher</div></div>
+        <div class="card"><strong>“Small pay — big difference.”</strong><div class="muted" style="margin-top:8px">— Mock: Sameer, gig driver</div></div>
+      </div>
+
+      <div style="margin-top:16px">
+        <div style="font-weight:700">Where we'll recruit early users</div>
+        <div class="partner-grid">
+          <div class="partner-item"><div class="partner-icon">KM</div><div><div class="partner-title">Kirana & small merchants</div><div class="partner-desc">Daily cash flows; frequent EMIs — ideal pilots.</div></div></div>
+          <div class="partner-item"><div class="partner-icon">GP</div><div><div class="partner-title">Gig platforms & drivers</div><div class="partner-desc">Irregular pay cycles — good fit for payday nudges.</div></div></div>
+          <div class="partner-item"><div class="partner-icon">MF</div><div><div class="partner-title">Microfinance / NBFCs</div><div class="partner-desc">Existing borrower base and workflows for lender playbooks.</div></div></div>
+          <div class="partner-item"><div class="partner-icon">PR</div><div><div class="partner-title">Payroll / MSMEs</div><div class="partner-desc">Sync salaries to reduce timing mismatch.</div></div></div>
+          <div class="partner-item"><div class="partner-icon">SH</div><div><div class="partner-title">Community groups / SHGs</div><div class="partner-desc">Trusted channels for onboarding and commitment devices.</div></div></div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <strong>Surprising insight</strong>
+          <div class="muted" style="margin-top:8px"><strong>Most EMI late-fees are caused by timing mismatch, not permanent income shortage.</strong> Fixing timing + small automated payments reduces penalty incidence — that's DebtPath's focus.</div>
+        </div>
+
+        <div style="margin-top:12px;display:flex;gap:12px;align-items:center">
+          <button class="btn" onclick="scrollToId('offers')">Partner / pilot with us</button>
+          <div class="muted" style="font-size:13px">We welcome community groups, NBFCs, payroll providers and gig platforms.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing & estimate -->
+    <section id="pricing" aria-labelledby="priceH">
+      <h2 id="priceH">Pricing</h2>
+      <p class="muted" style="margin-top:6px">We earn only if you save.</p>
+
+      <div class="pricing" style="margin-top:12px">
+        <div class="plan"><strong>Outcome-based (recommended)</strong><div class="muted" style="margin-top:8px">Transparent share of independently verified interest saved. No upfront fee.</div></div>
+        <div class="plan"><strong>Premium (optional)</strong><div class="muted" style="margin-top:8px">Monthly fee for priority negotiation & human support.</div></div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <div style="flex:1;min-width:220px"><label class="muted">Loan outstanding (₹)</label><input id="loanInput" type="number" placeholder="e.g., 45000" /></div>
+        <div style="flex:1;min-width:220px"><label class="muted">Monthly extra (₹)</label><input id="extraInput" type="number" placeholder="e.g., 350" /></div>
+        <div><button class="btn" onclick="estimate()">Estimate</button></div>
+      </div>
+      <div id="estimate" style="margin-top:12px;display:none;padding:12px;border-radius:10px;background:#E8FFF5;color:var(--accent);font-weight:700"></div>
+    </section>
+
+    <!-- Roadmap -->
+    <section id="roadmap" aria-labelledby="roadmapH">
+      <h2 id="roadmapH">User Journey Roadmap & First Value Moment</h2>
+      <div class="roadmap-wrap" style="margin-top:12px">
+        <div class="card"><strong>User Journey Roadmap</strong>
+          <div class="muted" style="margin-top:10px">
+            <div style="margin-bottom:8px"><strong>Discover</strong> — User finds us because they are stressed about EMIs/debt.</div>
+            <div style="margin-bottom:8px"><strong>Sign Up</strong> — Frictionless phone + OTP onboarding (90s).</div>
+            <div style="margin-bottom:8px"><strong>Understand</strong> — Financial Stress Score explains why money feels tight.</div>
+            <div><strong>Relief</strong> — Personalized ₹-saving plan + micro-action steps.</div>
+          </div>
+        </div>
+
+        <div class="card"><strong>First Value Moment</strong>
+          <div class="muted" style="margin-top:8px">User sees exact money they can save today (e.g., “Save ₹X / month”), producing an immediate “aha” and emotional relief — the primary conversion driver.</div>
+          <div style="margin-top:12px"><button class="btn" onclick="openModal()">Show sample First Value</button></div>
+          <div class="note" style="margin-top:12px"><small>Production requires AA connectors, optimization engine & payment rails (backend).</small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section aria-label="FAQ">
+      <h2>FAQ</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px">
+        <div class="card"><strong>How is data used?</strong><div class="muted" style="margin-top:6px">Only with your consent (AA or manual). Encrypted.</div></div>
+        <div class="card"><strong>Is this a loan?</strong><div class="muted" style="margin-top:6px">No — a planning & automation service.</div></div>
+        <div class="card"><strong>Will this affect credit?</strong><div class="muted" style="margin-top:6px">No — we optimise existing payments.</div></div>
+      </div>
+
+      <div class="card" style="margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div><strong style="font-size:18px">Ready to see your plan?</strong><div class="muted" style="margin-top:6px">Quick demo — no commitment.</div></div>
+        <div><button class="btn" onclick="openModal()">See My Plan</button></div>
+      </div>
+    </section>
+
+    <footer style="margin-top:18px"><div class="muted">© DebtPath — Prototype for demo & competition. Testimonials are illustrative.</div></footer>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:90;align-items:center;justify-content:center">
+    <div role="dialog" aria-modal="true" aria-labelledby="modalH" style="width:95%;max-width:520px;background:#fff;border-radius:12px;padding:18px;box-shadow:var(--shadow)">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h4 id="modalH" style="margin:0">Quick demo — Sample plan</h4>
+        <button aria-label="Close" class="ghost" onclick="closeModal()">Close</button>
+      </div>
+      <p class="muted" style="margin-top:8px;font-size:13px">Enter mobile (demo) or use sample data.</p>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <input id="phone" type="tel" placeholder="Mobile (10 digits)" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(18,20,23,0.06)" />
+        <button class="btn" onclick="useSample()">Use sample</button>
+      </div>
+
+      <div id="demo" style="margin-top:12px;display:none;padding:12px;border-radius:10px;background:var(--surface)">
+        <div style="font-weight:700">Sample plan active</div>
+        <div class="muted" style="margin-top:6px">Auto Dip-Pay: ON • Est. saved (12 mo): ₹4,760</div>
+        <div style="margin-top:12px"><button class="btn" onclick="closeModal()">Activate demo</button></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // scroll helper
+  function scrollToId(id){ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
+
+  // modal
+  function openModal(){ document.getElementById('modal').style.display='flex'; }
+  function closeModal(){ document.getElementById('modal').style.display='none'; document.getElementById('demo').style.display='none'; }
+  function useSample(){ document.getElementById('phone').value='9990012345'; document.getElementById('demo').style.display='block'; }
+
+  // estimate (illustrative)
+  function estimate(){
+    const loan = Number(document.getElementById('loanInput')?.value || 0);
+    const extra = Number(document.getElementById('extraInput')?.value || 0);
+    if(loan <= 0){ alert('Enter loan amount'); return; }
+    const baseline = loan * 0.12;
+    const saved = Math.round(Math.min(baseline * 0.6, extra * 12 * 0.35));
+    const fee = Math.round(saved * 0.10);
+    const net = Math.max(0, saved - fee);
+    const el = document.getElementById('estimate');
+    el.style.display = 'block';
+    el.textContent = `Est. saved: ₹${saved.toLocaleString()} • Fee (10%): ₹${fee.toLocaleString()} • Net ≈ ₹${net.toLocaleString()}`;
+  }
+
+  // close on ESC or backdrop
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+  document.getElementById('modal').addEventListener('click', function(e){ if(e.target === this) closeModal(); });
+
+</script>
+</body>
+</html>
